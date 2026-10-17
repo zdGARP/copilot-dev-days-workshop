@@ -75,6 +75,13 @@ function calculatePercentage(score, total) {
 }
 
 /**
+ * Returns true when the current percentage beats the previous best.
+ */
+function isNewBestScore(current, best) {
+  return best === null || current > best;
+}
+
+/**
  * Formats remaining time as a nonnegative whole number of seconds.
  */
 function formatTimeLeft(seconds) {
@@ -110,6 +117,7 @@ if (typeof module !== "undefined" && module.exports) {
     advanceQuestion,
     isQuizFinished,
     calculatePercentage,
+    isNewBestScore,
     formatTimeLeft,
     getFeedbackMessage,
     getGrade,

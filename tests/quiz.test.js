@@ -10,6 +10,7 @@ const {
   advanceQuestion,
   isQuizFinished,
   calculatePercentage,
+  isNewBestScore,
   formatTimeLeft,
   getFeedbackMessage,
   getGrade,
@@ -90,6 +91,22 @@ test("calculatePercentage rounds to a whole number", () => {
 
 test("calculatePercentage returns 0 when there are no questions", () => {
   assert.equal(calculatePercentage(0, 0), 0);
+});
+
+test("isNewBestScore accepts the first score when no best exists", () => {
+  assert.equal(isNewBestScore(0, null), true);
+});
+
+test("isNewBestScore accepts a higher score than the previous best", () => {
+  assert.equal(isNewBestScore(81, 80), true);
+});
+
+test("isNewBestScore rejects a score equal to the previous best", () => {
+  assert.equal(isNewBestScore(80, 80), false);
+});
+
+test("isNewBestScore rejects a score lower than the previous best", () => {
+  assert.equal(isNewBestScore(79, 80), false);
 });
 
 test("formatTimeLeft formats a positive value with the timer icon", () => {
