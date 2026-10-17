@@ -22,6 +22,51 @@ function isCorrect(question, selectedIndex) {
 }
 
 /**
+ * Creates fresh state for a quiz using the supplied questions.
+ */
+function createQuiz(questions) {
+  return {
+    questions,
+    current: 0,
+    score: 0,
+    questionFinished: false,
+  };
+}
+
+/**
+ * Records an answer without changing the existing quiz state.
+ */
+function answerQuestion(state, selectedIndex) {
+  const correct = isCorrect(state.questions[state.current], selectedIndex);
+  return {
+    state: {
+      ...state,
+      score: state.score + (correct ? 1 : 0),
+      questionFinished: true,
+    },
+    correct,
+  };
+}
+
+/**
+ * Advances to the next question without changing the existing quiz state.
+ */
+function advanceQuestion(state) {
+  return {
+    ...state,
+    current: state.current + 1,
+    questionFinished: false,
+  };
+}
+
+/**
+ * Returns true when the quiz has no remaining question to display.
+ */
+function isQuizFinished(state) {
+  return state.current >= state.questions.length;
+}
+
+/**
  * Converts a score into a whole-number percentage (0-100).
  */
 function calculatePercentage(score, total) {
@@ -38,17 +83,35 @@ function formatTimeLeft(seconds) {
 }
 
 /**
+ * Returns feedback for a selected answer.
+ */
+function getFeedbackMessage(correct) {
+  return correct ? "Correct!" : "Not quite. The correct answer is highlighted.";
+}
+
+/**
  * Turns a percentage into a grade.
  * A = 90% or more, B = 75% or more, C = 50% or more.
  */
 function getGrade(percentage) {
-  if (percentage > 90) return "A";
-  if (percentage > 75) return "B";
-  if (percentage > 50) return "C";
+  if (percentage >= 90) return "A";
+  if (percentage >= 75) return "B";
+  if (percentage >= 50) return "C";
   return "Keep practicing";
 }
 
 // Lets Node.js tests load this file. Browsers ignore this block.
 if (typeof module !== "undefined" && module.exports) {
-  module.exports = { shuffle, isCorrect, calculatePercentage, formatTimeLeft, getGrade };
+  module.exports = {
+    shuffle,
+    isCorrect,
+    createQuiz,
+    answerQuestion,
+    advanceQuestion,
+    isQuizFinished,
+    calculatePercentage,
+    formatTimeLeft,
+    getFeedbackMessage,
+    getGrade,
+  };
 }
