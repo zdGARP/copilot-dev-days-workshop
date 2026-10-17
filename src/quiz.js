@@ -30,6 +30,14 @@ function calculatePercentage(score, total) {
 }
 
 /**
+ * Formats remaining time as a nonnegative whole number of seconds.
+ */
+function formatTimeLeft(seconds) {
+  const remaining = Number.isFinite(seconds) ? Math.max(0, Math.floor(seconds)) : 0;
+  return `⏱ ${remaining}s`;
+}
+
+/**
  * Turns a percentage into a grade.
  * A = 90% or more, B = 75% or more, C = 50% or more.
  */
@@ -42,5 +50,5 @@ function getGrade(percentage) {
 
 // Lets Node.js tests load this file. Browsers ignore this block.
 if (typeof module !== "undefined" && module.exports) {
-  module.exports = { shuffle, isCorrect, calculatePercentage, getGrade };
+  module.exports = { shuffle, isCorrect, calculatePercentage, formatTimeLeft, getGrade };
 }
